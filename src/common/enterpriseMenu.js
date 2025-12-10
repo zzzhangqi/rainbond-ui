@@ -33,7 +33,16 @@ function menuData(eid, currentUser, enterprise, pluginList, clusterList) {
     Detectionarr.push(alarmPlugin)
   }
   if(lokiPlugin && Object.keys(lokiPlugin).length !== 0){
-    Detectionarr.push(lokiPlugin)
+    let shouldShowLoki = false;
+    Object.values(lokiPlugin).forEach(plugin => {
+      if (plugin && plugin.labels &&
+          plugin.labels['plugin.rainbond.io/enable'] === 'true') {
+        shouldShowLoki = true;
+      }
+    });
+    if (shouldShowLoki) {
+      Detectionarr.push(lokiPlugin)
+    }
   }  
   
   if (Detectionarr && Detectionarr.length == 1) {    
